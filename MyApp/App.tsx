@@ -40,7 +40,8 @@ const Section: React.FC<{
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -49,7 +50,8 @@ const Section: React.FC<{
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
@@ -68,12 +70,14 @@ const App = () => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        style={backgroundStyle}
+      >
         <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+          }}
+        >
           <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
