@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,6 +18,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {Searchbar} from 'react-native-paper';
 
 import {
   Colors,
@@ -59,47 +60,37 @@ const Section: React.FC<{
 };
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const [search, setSearch] = useState('');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}
-      >
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}
-        >
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.baseColumncontainer}>
+      <Text style={[styles.sectionTitle]}>Demo</Text>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={text => {
+          setSearch(text);
+        }}
+        value={search}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  baseColumncontainer: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+  },
+  input: {
+    flex: 1,
+    margin: 2,
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
   },
   sectionTitle: {
+    alignSelf: 'center',
     fontSize: 24,
     fontWeight: '600',
   },
