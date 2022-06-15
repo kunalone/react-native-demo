@@ -8,11 +8,13 @@
  * @format
  */
 
-import React, {useState} from 'react';
+import _ from 'lodash';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  TextInput,
   StyleSheet,
   Text,
   useColorScheme,
@@ -27,6 +29,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+var delayInMilliseconds = 4000;
 
 const Section: React.FC<{
   title: string;
@@ -59,8 +63,12 @@ const Section: React.FC<{
   );
 };
 
-const App = () => {
+const App: React.FC = () => {
   const [search, setSearch] = useState('');
+  const delayedQuery = useCallback(
+    _.debounce(q => console.log('working now at all'), 3000),
+    [],
+  );
 
   return (
     <SafeAreaView style={styles.baseColumncontainer}>
@@ -69,6 +77,7 @@ const App = () => {
         placeholder="Search"
         onChangeText={text => {
           setSearch(text);
+          delayedQuery(text);
         }}
         value={search}
       />
