@@ -22,23 +22,13 @@ interface GifState {
 }
 
 function Dashboard() {
-  const loading = useSelector<GifState, boolean>(
-    state => state.loading,
-    shallowEqual,
-  );
-  const gif = useSelector<GifState, any[]>(state => state.gif, shallowEqual);
-  const error = useSelector<GifState, string>(
-    state => state.error,
-    shallowEqual,
-  );
+  const loading = useSelector<GifState, boolean>(state => state.loading);
+  const gif = useSelector<GifState, any[]>(state => state.gif);
+  const error = useSelector<GifState, string>(state => state.error);
   const currentPages = useSelector<GifState, number>(
     state => state.currentPages,
-    shallowEqual,
   );
-  const totalPages = useSelector<GifState>(
-    state => state.totalPages,
-    shallowEqual,
-  );
+  const totalPages = useSelector<GifState>(state => state.totalPages);
 
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
