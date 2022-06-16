@@ -1,12 +1,26 @@
 import axios from 'axios';
 import _, {List} from 'lodash';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {FlatList, Image, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Searchbar} from 'react-native-paper';
 import WebView from 'react-native-webview';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import {fetchGifsFailure, fetchGifsSuccess, resetGifsView} from './actions';
+import {
+  fetchGifsFailure,
+  fetchGifsSuccess,
+  resetGifLoading,
+  resetGifsView,
+  startFetchGifsRequest,
+} from './actions';
 import {Keyboard} from 'react-native';
 
 var delayInMilliseconds = 2000;
@@ -38,6 +52,7 @@ function Dashboard() {
     _.debounce(async q => {
       let finalSearch = searchString.current.trim();
       if (finalSearch.length > 3) {
+        dispatch(resetGifLoading());
         let response = await getQuestionnaireEachById(
           finalSearch,
           currentPages,
@@ -110,7 +125,10 @@ function Dashboard() {
 
   return (
     <SafeAreaView style={styles.baseColumncontainer}>
-      <Text style={[styles.sectionTitle]}>Demo</Text>
+      <View style={styles.titleRow}>
+        <Text style={[styles.sectionTitle]}> Demo</Text>
+        {loading ? <ActivityIndicator size="large" color="#131413" /> : null}
+      </View>
       <Searchbar
         placeholder="Search"
         onChangeText={text => {
@@ -138,6 +156,11 @@ function Dashboard() {
 }
 
 const styles = StyleSheet.create({
+  titleRow: {
+    flexDirection: 'row',
+    height: 80,
+    justifyContent: 'space-between',
+  },
   listView: {
     flexGrow: 1,
   },
@@ -147,6 +170,7 @@ const styles = StyleSheet.create({
   baseColumncontainer: {
     flexDirection: 'column',
     alignItems: 'stretch',
+    padding: 10,
   },
   input: {
     flex: 1,

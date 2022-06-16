@@ -25,6 +25,12 @@ export const resetGifsView = () => {
   };
 };
 
+export const resetGifLoading = () => {
+  return {
+    type: FETCH_GIFS_REQUESTED,
+  };
+};
+
 export const startFetchGifsRequest = (searchText: string) => {
   return {
     type: START_FETCH_GIFS_REQUESTED,
