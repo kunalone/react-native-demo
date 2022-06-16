@@ -1,25 +1,22 @@
 import axios from 'axios';
-import _, {List} from 'lodash';
+import _ from 'lodash';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {Searchbar} from 'react-native-paper';
 import WebView from 'react-native-webview';
-import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchGifsFailure,
   fetchGifsSuccess,
   resetGifLoading,
   resetGifsView,
-  startFetchGifsRequest,
 } from './actions';
 import {Keyboard} from 'react-native';
 
@@ -38,11 +35,9 @@ interface GifState {
 function Dashboard() {
   const loading = useSelector<GifState, boolean>(state => state.loading);
   const gif = useSelector<GifState, any[]>(state => state.gif);
-  const error = useSelector<GifState, string>(state => state.error);
   const currentPages = useSelector<GifState, number>(
     state => state.currentPages,
   );
-  const totalPages = useSelector<GifState>(state => state.totalPages);
 
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');

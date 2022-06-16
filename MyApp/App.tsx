@@ -12,7 +12,7 @@ import _ from 'lodash';
 import React from 'react';
 
 import {Provider} from 'react-redux';
-import {store} from './src/actions';
+import {store} from './src/store';
 import Dashboard from './src/dashboard';
 
 const App: React.FC = () => {
