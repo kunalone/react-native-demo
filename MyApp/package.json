@@ -11,15 +11,19 @@
     },
     "dependencies": {
         "@types/lodash": "^4.14.182",
+        "axios": "^0.27.2",
         "lodash": "^4.17.21",
         "react": "17.0.2",
         "react-native": "0.68.2",
         "react-native-elements": "^3.4.2",
+        "react-native-fast-image": "^8.5.11",
         "react-native-paper": "^4.12.1",
         "react-native-svg": "^12.3.0",
         "react-native-vector-icons": "^9.1.0",
+        "react-native-webview": "^11.22.2",
         "react-redux": "^8.0.2",
-        "redux": "^4.2.0"
+        "redux": "^4.2.0",
+        "redux-thunk": "^2.4.1"
     },
     "devDependencies": {
         "@babel/core": "^7.12.9",

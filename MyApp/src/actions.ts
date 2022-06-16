@@ -3,80 +3,85 @@ const thunkMiddleware = require('redux-thunk').default;
 const axios = require('axios');
 const createStore = redux.createStore;
 const applyMiddleware = redux.applyMiddleware;
-import {AnyAction, combineReducers} from 'redux';
+import {combineReducers} from 'redux';
 
 const initialState = {
   loading: false,
-  users: [],
+  gif: [],
   error: '',
+  currentPages: 0,
+  totalPages: 0,
 };
 
-const FETCH_USERS_REQUESTED = 'FETCH_USERS_REQUESTED';
-const FETCH_USERS_SUCCEEDED = 'FETCH_USERS_SUCCEEDED';
-const FETCH_USERS_FAILED = 'FETCH_USERS_FAILED';
+const START_FETCH_GIFS_REQUESTED = 'START_FETCH_GIFS_REQUESTED';
+const FETCH_GIFS_REQUESTED = 'FETCH_GIFS_REQUESTED';
+const RESET_GIFS_REQUESTED = 'RESET_GIFS_REQUESTED';
+const FETCH_GIFS_SUCCEEDED = 'FETCH_GIFS_SUCCEEDED';
+const FETCH_GIFS_FAILED = 'FETCH_GIFS_FAILED';
 
-export const fetchUsersRequest = () => {
+export const resetGifsView = () => {
   return {
-    type: FETCH_USERS_REQUESTED,
+    type: RESET_GIFS_REQUESTED,
   };
 };
 
-export const fetchUsersSuccess = (users: any) => {
+export const startFetchGifsRequest = (searchText: string) => {
   return {
-    type: FETCH_USERS_SUCCEEDED,
-    payload: users,
+    type: START_FETCH_GIFS_REQUESTED,
+    payload: searchText,
   };
 };
 
-export const fetchUsersFailure = (error: any) => {
+export const fetchGifsSuccess = (gif: any) => {
   return {
-    type: FETCH_USERS_FAILED,
+    type: FETCH_GIFS_SUCCEEDED,
+    payload: gif,
+  };
+};
+
+export const fetchGifsFailure = (error: any) => {
+  return {
+    type: FETCH_GIFS_FAILED,
     payload: error,
-  };
-};
-
-export const fetchGifs = () => {
-  return function (dispatch: any) {
-    dispatch(fetchUsersRequest());
-    axios
-      .get('https://jsonplaceholder.typicode.com/users')
-      .then((response: any) => {
-        // response.data is the users
-        const users = response.data.map((user: {id: any}) => user.id);
-        dispatch(fetchUsersSuccess(users));
-      })
-      .catch((error: {message: any}) => {
-        // error.message is the error message
-        dispatch(fetchUsersFailure(error.message));
-      });
   };
 };
 
 const reducer = (state = initialState, action: {type: any; payload: any}) => {
   console.log(action.type);
   switch (action.type) {
-    case FETCH_USERS_REQUESTED:
+    case FETCH_GIFS_REQUESTED:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_USERS_SUCCEEDED:
+    case FETCH_GIFS_SUCCEEDED:
+      let gifsArray = state.gif.concat(action.payload.gifs);
       return {
         loading: false,
-        users: action.payload,
+        gif: gifsArray,
         error: '',
+        currentPages: gifsArray.length,
+        totalPages: action.payload.totalCount,
       };
-    case FETCH_USERS_FAILED:
+    case FETCH_GIFS_FAILED:
       return {
         loading: false,
-        users: [],
+        gif: [],
         error: action.payload,
+        currentPages: 0,
+        totalPages: 0,
       };
+    case RESET_GIFS_REQUESTED:
+      return {
+        loading: false,
+        gif: [],
+        error: '',
+        currentPages: 0,
+        totalPages: 0,
+      };
+    default:
+      return state;
   }
 };
 
-const allReducers = combineReducers({reducer: reducer});
-
-export const store = createStore(allReducers, applyMiddleware(thunkMiddleware));
-
-store.dispatch(fetchGifs());
+export const store = createStore(reducer);
